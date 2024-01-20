@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@400;800&display=swap');
+
+.App .conteiner-fluid{
+  border-radius: 0;
+}
+.App .jumbotron {
+  background-color: #DE2286;
+  font-family: 'Urbanist', sans-serif;
+  min-width: 318px;
+  padding:10px;
+  text-align: center;
+  margin-bottom: 5px;
+  
+}
+.App .jumbotron hr {
+  background-color: #DE2286;
+  margin: 0;
+}
+
+h2{
+  margin: 0 auto;
+
+}

@@ -1,0 +1,22 @@
+.Inicio hr {
+    background-color: #DE2286;
+    margin: 0;
+}
+
+
+.inicio .cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+}
+.Inicio .jumbotron{
+    background-color: #F1F1F1;
+    padding: 10px;
+}
+.inicio {
+    height: auto;
+    text-align: center;
+    
+    padding: 10px;
+    padding-bottom: 10px;    
+}

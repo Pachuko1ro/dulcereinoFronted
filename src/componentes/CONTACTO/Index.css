@@ -1,0 +1,30 @@
+.Contacto .jumbotron {
+    background-color: #f1f1f1;
+    
+  
+}
+
+.Contacto form{
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
+.Contacto hr {
+    background-color: #DE2286;
+   
+}
+.Contacto input[type='submit']{
+    width: 150px;
+    margin: 0 auto;
+    background-color: #DE2286;
+    color: #f1f1f1;
+    font-weight: bold;
+}
+.Contacto input[type='checkbox']{
+    width: 20px;
+    height: 20px;
+    margin: 0 auto;
+    background-color: #DE2286;
+    color: #f1f1f1;
+    font-weight: bold;
+}

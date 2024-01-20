@@ -1,0 +1,18 @@
+.Login .jumbotron {
+    background-color: #F1F1F1;
+    padding: 15px;
+    min-height: 400px;
+}
+
+.Login hr {
+    background-color: #DE2286;
+}
+
+.Login label {
+    text-transform: capitalize;
+}
+.Login form{
+   
+    margin: 0 auto;
+    margin-top: 10px;
+}

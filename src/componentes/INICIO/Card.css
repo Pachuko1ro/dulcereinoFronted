@@ -1,0 +1,22 @@
+.precio {
+    color: orange;
+    font-size: 2rem;
+}
+
+.card h4{
+    text-decoration: underline;
+}
+.card {
+    margin-bottom: 10px;
+}
+.card img{
+    padding: 25px;
+}
+.card img:hover {
+    transform:scale(1.2);
+}
+.card #hr1{
+    width: 80%; 
+    margin: 0 10% 0 10%;
+    border:1px solid #DE2286 ;
+}

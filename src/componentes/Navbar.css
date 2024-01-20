@@ -1,0 +1,30 @@
+.separador-navbar {
+    margin-bottom: 5px;
+}
+#navbarNav{
+    font-size: 1 rem;
+    /* border: 1px solid blue; */
+    /* display: block; */
+}
+.nav-item{
+    margin-left: 10px;
+}
+
+.nav-item:focus{
+    background-color: #DE2286;
+    color: white;
+}
+
+.nav-item::after {
+     content: '';
+     display: block;
+     background: #DE2286;
+     width: 0;
+     height: 3px;
+     transition: all 350ms;
+}
+  
+.nav-item:hover::after {
+     width: 100%;
+}
+ 

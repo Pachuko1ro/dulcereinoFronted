@@ -1,0 +1,17 @@
+.Ingreso label {
+    text-transform: capitalize;
+}
+
+.Ingreso{
+    padding: 10px;
+}
+
+.mi-input{
+    width: 30px;
+    height: 30px;
+    display: block;
+    
+}
+.form-check{
+    margin: 0 auto;
+}
