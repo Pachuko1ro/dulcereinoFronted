@@ -1,7 +1,6 @@
 import { LOGIN, USUARIOLOGUEADO } from "./types"
 
 export const loginReducer = (state, action) => {
-    console.warn('REDUCER -> loginReducer', state, action)
 
     switch(action.type) {
         case LOGIN:

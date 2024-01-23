@@ -11,6 +11,7 @@ export const Navbar = () => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const navCarrito = ()=>{navigate('/carrito')}
 
     const { usuario, admin } = usuarioLogueado
 
@@ -57,6 +58,7 @@ export const Navbar = () => {
                             clearToken()
                         }
                     }><b>{ usuario } ({admin?'ADMIN':'USER'}) Salir</b></button>
+                    <button className="btn btn-light btn-sm" onClick={navCarrito} type="button"><i className="bi bi-cart"></i></button>
                 </>                
             }
         </nav>

@@ -12,8 +12,6 @@ export function enviarFormDataAjax(data, progress, urlfoto) {
     xhr.addEventListener('load', () => {
         if(xhr.status === 200) {
             const rta = JSON.parse(xhr.response)
-            //console.log(rta)
-
             const url = rta.urlFotoFTP
             if(urlfoto) urlfoto(url)
         }
@@ -22,7 +20,6 @@ export function enviarFormDataAjax(data, progress, urlfoto) {
     xhr.upload.addEventListener('progress', e => {
         if(e.lengthComputable) {
             porcentaje = parseInt((e.loaded * 100) / e.total)
-            //console.warn(porcentaje + '%')
             if(progress) progress(porcentaje)
         }
     })

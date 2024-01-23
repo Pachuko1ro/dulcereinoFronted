@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './Login.css'
 
 import * as servicio from './Servicios/usuarios'
@@ -10,6 +10,18 @@ import { Carousel } from 'react-bootstrap'
 
 export function Login() {
 
+    const [anchoVentana, setAnchoVentana] = useState(window.innerWidth)
+    const actualizarAnchoVentana = () => {
+    setAnchoVentana(window.innerWidth)
+    }
+    useEffect(() => {
+    window.addEventListener('resize', actualizarAnchoVentana);
+    
+    return () => {
+      window.removeEventListener('resize', actualizarAnchoVentana);
+    };
+    }, [])
+    
     const [ credenciales, setCredenciales ] = useState({ usuario: '', password: '', admin: false })
     const [ modoRegister, setModoRegister ] = useState(false)
 
@@ -19,17 +31,11 @@ export function Login() {
 
     const onSubmit = async e => {
         e.preventDefault()
-
-        //console.log('onSubmit', credenciales)
-
         // Modo login
         if(!modoRegister) {
             const rta = await servicio.loginUsuario(credenciales)
-            //console.log(rta)
 
             const { status, usuario, admin, token } = rta
-            console.log(status, usuario, admin, token)
-
             if(status === 'loginOk') {
                 dispatch(accionLogin(true))
                 dispatch(accionUsuarioLogueado(usuario,admin))
@@ -58,10 +64,10 @@ export function Login() {
         <div className="Login">
             <div className="jumbotron">
                 <div className='row'>
-                    <div className="col-4">
-                    <h2>{modoRegister? 'Register':'Login'}</h2>
+                    <div className={anchoVentana>=750?"col-4":"col-12"}>
+                    <h2>{modoRegister? 'Registrarse':'Ingresar'}</h2>
                     <hr />
-                    <form className='w-75' onSubmit={onSubmit}>
+                    <form className={anchoVentana>=750?"w-75":""} onSubmit={onSubmit}>
                         {/* --- campo usuario --- */}
                         <div className="form-group">
                             <label htmlFor="usuario">usuario</label>
@@ -88,13 +94,13 @@ export function Login() {
                         </div>
                         }
 
-                        <input type="submit" className={`btn btn-${modoRegister? 'danger':'success'} m-2`} value={modoRegister? 'Register':'Login'} />
-                        <input type="button" className="btn btn-warning m-2" value={modoRegister? 'Ir a Login':'Ir a Register'} onClick={
+                        <input type="submit" className={`btn btn-${modoRegister? 'danger':'success'} m-2`} value={modoRegister? 'Registrarse':'Ingresar'} />
+                        <input type="button" className="btn btn-warning m-2" value={modoRegister? 'Ir a Ingresar':'Ir a Registrarse'} onClick={
                             () => setModoRegister(!modoRegister)
                         } />
                     </form>
                     </div>
-                    <div className="col-8">
+                    <div className={anchoVentana>=750?"col-8":"col-12"}>
                         <div className="jumbotron">
                         <Carousel>
                             <Carousel.Item interval={1000}>
@@ -103,9 +109,6 @@ export function Login() {
                                 src="https://pachuko.000webhostapp.com/img/1.png"
                                 alt="First slide"
                                 />
-                                <Carousel.Caption>
-                              
-                                </Carousel.Caption>
                             </Carousel.Item>
                             <Carousel.Item interval={500}>
                                 <img
@@ -113,9 +116,6 @@ export function Login() {
                                 src="https://pachuko.000webhostapp.com/img/2.png"
                                 alt="Second slide"
                                 />
-                                <Carousel.Caption>
-                                
-                                </Carousel.Caption>
                             </Carousel.Item>
                             <Carousel.Item>
                                 <img
@@ -123,19 +123,11 @@ export function Login() {
                                 src="https://pachuko.000webhostapp.com/img/3.png"
                                 alt="Third slide"
                                 />
-                                <Carousel.Caption>
-                               
-                                </Carousel.Caption>
                             </Carousel.Item>
-                            </Carousel>
-
-
-
+                        </Carousel>
                         </div>
-
                     </div>
                 </div>
             </div>
         </div>
-    )
-}
+)}

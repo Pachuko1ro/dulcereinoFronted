@@ -5,10 +5,8 @@ import './Index.css'
 export function Index(props) {
 
     useEffect(() => {
-        console.log('Componente Index Nosotros (montado)')
         
         return () => {
-            console.log('Componente Index Nosotros (desmontado)')
         }
     },[])
 

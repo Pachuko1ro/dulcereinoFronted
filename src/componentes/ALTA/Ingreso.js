@@ -54,18 +54,19 @@ export default function Ingreso(props) {
                
 
                 {/* ------- Campo envio ------- */}
-                <div className="form-group  form-check col-auto">
-                    <label htmlFor="envio">envio</label>
-                    <input type="checkbox" id="envio" className="mi-input" checked={envio} onChange={onChange} />
-                </div>
-                 {/* Zona de obtención de la foto del producto */}
-                 <ObtenerFoto enviarUrlImagen={enviarUrlImagen}/>
-
-                {/* ----- botón de envío ------ */}
-                <div className="boton col-12">
-                <button disabled={invalid} className={`btn btn-${editarID?'warning':'success'}`}>
-                    { editarID? 'Actualizar' : 'Enviar' }
-                </button>
+            <div className="form-group  form-check col-auto">
+                <label htmlFor="envio">envio</label>
+                <input type="checkbox" id="envio" className="mi-input" checked={envio} onChange={onChange} />
+            </div>
+                {/* Zona de obtención de la foto del producto */}
+            <div className="form-group col-12">
+                <ObtenerFoto enviarUrlImagen={enviarUrlImagen}/>
+            </div>
+            {/* ----- botón de envío ------ */}
+            <div className="boton col-12">
+            <button disabled={invalid} className={`btn btn-${editarID?'warning':'success'}`}>
+                { editarID? 'Actualizar' : 'Enviar' }
+            </button>
                 </div>
                 </div>
             </form>

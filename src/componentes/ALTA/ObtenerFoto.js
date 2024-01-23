@@ -13,7 +13,6 @@ export function ObtenerFoto(props) {
 
 
     const enviarFoto = archivo => {
-        //console.log(archivo)
 
         if(archivo?.type.includes('image')) {
             const data = new FormData()
@@ -23,7 +22,6 @@ export function ObtenerFoto(props) {
                 setPorcentaje(porcentaje)
                 if(porcentaje === 100) setStartSpinner(true)
             }, url => {
-                //console.log(url)
                 setUrlFoto(url)
                 enviarUrlImagen(url)
                 setStartSpinner(false)
@@ -41,30 +39,24 @@ export function ObtenerFoto(props) {
 
     const dragenter = e => {
         e.preventDefault()
-        //console.log('dragenter')
     }
 
     const dragleave = e => {
         e.preventDefault()
-        //console.log('dragleave')
     }
 
     const dragover = e => {
         e.preventDefault()
-        //console.log('dragover')
     }
 
     const drop = e => {
         e.preventDefault()
-        //console.log('drop')
         const archivo = e.dataTransfer.files[0]
-        //console.log(archivo)
         enviarFoto(archivo)
     }
 
     const change = e => {
         const archivo = e.target.files[0]
-        //console.log(archivo)
         enviarFoto(archivo)
 
         setValorInput('')
@@ -72,7 +64,9 @@ export function ObtenerFoto(props) {
 
     return (
         <div className="ObtenerFoto">
+            
             <input id="archivo" type="file" value={valorInput} onChange={change} />
+
             <div 
                 id="drop"
                 onDragEnter={dragenter}
@@ -80,18 +74,18 @@ export function ObtenerFoto(props) {
                 onDragOver={dragover}
                 onDrop={drop}
             >
-                {
+                    {
                     startSpinner &&
-                        <div className="d-flex justify-content-center">
+                        <div className="d-flex justify-content-center mt-4">
                             <div className="spinner-border text-primary" role="status">
-                                <span className="sr-only">Loading...</span>
+                                <span className="sr-only">Cargando...</span>
                             </div>
                         </div>
-                }
-
-                { porcentaje > 0 && <><progress min="0" max="100" value={porcentaje}></progress> <span>{porcentaje}%</span></> }
-                <img src={urlFoto} alt="" />
-                <label htmlFor="archivo">D&D ó Click</label>
+                    }
+                   
+                    { porcentaje > 0 ?( <><progress min="0" max="100" value={porcentaje}></progress><span>{porcentaje}%</span></>):
+                    (<label htmlFor="archivo"></label>) }
+                    {porcentaje===100 && <img src={urlFoto} alt="" />}
             </div>
         </div>
     )

@@ -18,7 +18,6 @@ export async function enviarCarrito(pedido) {
 }
 
 export async function getPreference(carrito) {
-    console.log(carrito)
 
     const prefItems = { 
         body: {
@@ -37,8 +36,6 @@ export async function getPreference(carrito) {
             auto_return: "approved"            
         }
     }
-
-    console.log(prefItems)
 
     return axios.post(URL_API_CARRITO + 'mp/create_preference', prefItems)
 }

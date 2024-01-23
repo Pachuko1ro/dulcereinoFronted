@@ -6,10 +6,8 @@ import { Carousel } from 'react-bootstrap'
 export function Index(props) {
 
     useEffect(() => {
-        console.log('Componente Index Otra (montado)')
         
         return () => {
-            console.log('Componente Index Otra (desmontado)')
         }
     },[])
 

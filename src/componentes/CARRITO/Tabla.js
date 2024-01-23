@@ -4,7 +4,6 @@ import './Tabla.css'
 export const Tabla = props => {
 
     const { carrito, borrarID, incrementarCantID, decrementarCantID } = props
-    //console.log(productos)
 
     return (
         <div className="Tabla">
@@ -13,7 +12,6 @@ export const Tabla = props => {
                 <table className="table table-dark">
                     <thead>
                         <tr>
-                            {/* <th>#</th> */}
                             <th>nombre</th>
                             <th>precio</th>
                             <th>marca</th>
@@ -27,15 +25,17 @@ export const Tabla = props => {
                         {
                             carrito.map((producto, index) =>
                                 <tr key={index}>
-                                    {/* <td>{producto.id}</td> */}
                                     <td>{producto.nombre}</td>
                                     <td>${producto.precio}</td>
                                     <td>{producto.marca}</td>
                                     <td><img width="100px" src={producto.foto} alt={"foto de " + producto.nombre} /></td>
                                     <td>
-                                        <button className='btn btn-info ml-2' onClick={() => decrementarCantID(producto.id)}>-</button>
-                                        <button className='btn btn-light ml-2' >{producto.cantidad}</button>
-                                        <button className='btn btn-info ml-2' onClick={() => incrementarCantID(producto.id)}>+</button>
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <button type="button" class="btn btn-info"onClick={() => decrementarCantID(producto.id)}><i className="bi bi-dash-lg"></i></button>
+                                            <button type="button" class="btn btn-light" >{producto.cantidad}</button>
+                                            <button type="button" class="btn btn-info"onClick={() => incrementarCantID(producto.id)}><i className="bi bi-plus"></i></button>
+                                        </div>
+                                        
                                     </td>
                                     <td>${(producto.precio * producto.cantidad).toFixed(2)}</td>
                                     <td>

@@ -1,8 +1,5 @@
 import axios from "axios"
 
-//console.log('process.env.NODE_ENV:', process.env.NODE_ENV)
-//console.log('process.env.REACT_APP_PORT_SRV_DEV:', process.env.REACT_APP_PORT_SRV_DEV)
-
 const URL_API_CONTACTOS = process.env.NODE_ENV === 'production'
                                     ? '/api/contactos/'
                                     : `http://localhost:${process.env.REACT_APP_PORT_SRV_DEV}/api/contactos/`

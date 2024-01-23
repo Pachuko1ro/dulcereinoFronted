@@ -4,7 +4,6 @@ import './Tabla.css'
 export const Tabla = props => {
 
     const { productos, editar, borrar, editarID } = props
-    //console.log(productos)
 
     return (
         <div className="Tabla">
@@ -16,7 +15,6 @@ export const Tabla = props => {
                     <table className="table table-dark">
                         <thead>
                             <tr>
-                                {/* <th>#</th> */}
                                 <th>nombre</th>
                                 <th>precio</th>
                                 <th>stock</th>
@@ -30,10 +28,8 @@ export const Tabla = props => {
                         </thead>
                         <tbody>
                             {
-                                /* productos.filter(p => p.precio < 300).map( (producto,index) =>  */
                                 productos.map( (producto,index) => 
                                     <tr key={index}>
-                                        {/* <td>{producto.id}</td> */}
                                         <td>{producto.nombre}</td>
                                         <td>${producto.precio}</td>
                                         <td>{producto.stock}</td>

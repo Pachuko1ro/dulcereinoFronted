@@ -12,27 +12,21 @@ export function Index(props) {
     const [carrito, setCarrito] = useLocalStorage('carrito', [])
 
     useEffect(() => {
-        console.log('Componente Index Inicio (montado)')
 
         async function pedir() {
             const productos = await obtenerProductos()
-            //console.log(productos)
             setProductos(productos)
         }
         pedir()
 
         return () => {
-            console.log('Componente Index Inicio (desmontado)')
         }
     }, [])
 
 
     function agregarCarritoID(id) {
-        console.log('agregarCarritoID', id)
 
         const producto = productos.find(p => p.id === id)
-        console.log(producto)
-
         const carritoClon = [...carrito]
 
         let pC = carritoClon.find(prodC => prodC.id === producto.id)

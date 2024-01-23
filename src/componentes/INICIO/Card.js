@@ -4,7 +4,9 @@ export const Card = props => {
 
     const {producto, agregarCarritoID } = props
 
-
+        const productosAlmacenados = JSON.parse(localStorage.getItem('carrito')) || [];
+        const productoAlmacenado = productosAlmacenados.find((p) => p.id === producto.id);
+        const cantidadAlmacenada = productoAlmacenado ? productoAlmacenado.cantidad : 0
 
     return (
         <div className="card" style={{width: '15rem'}}>
@@ -18,14 +20,13 @@ export const Card = props => {
                 <p><b>Detalles: </b>{producto.detalles}</p>
                 <p className="precio"><b>Precio: </b> <span style={{color:'black'}}>${producto.precio}</span></p>
                 <p><b style={{color:'orange'}}>Envío: </b>{producto.envio? 'Si' : 'No'}</p>
-                <button className={`btn btn-${producto.cantidad>0? 'success':'primary'}`} onClick={
+                <button className={`btn btn-${cantidadAlmacenada>0? 'success':'primary'}`} onClick={
                     () => agregarCarritoID(producto.id)
-                }>{producto.cantidad>0? <b>Cargado al Carrito</b>:'Agregar al carrito'}</button>
+                }>{cantidadAlmacenada>0? <b>Cargado al Carrito</b>:'Agregar al carrito'}</button>
                                 
-                {producto.cantidad>0 &&
-                    <p>Cantidad: {producto.cantidad}</p>
+                {cantidadAlmacenada>0 &&
+                    <p><b>Cantidad: {cantidadAlmacenada}</b></p>
                 }
-                
             </section>
         </div>
     )

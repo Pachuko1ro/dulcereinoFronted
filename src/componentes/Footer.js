@@ -15,10 +15,7 @@ export const Footer =()=>{
     useEffect(() => {
       async function validar() {
         const token = getToken()
-        console.log(token)
-  
         const rta = await validarTokenUsuario(token)
-        console.log(rta)
   
         if(!rta.error) {
           dispatch(accionLogin(true))

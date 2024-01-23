@@ -9,23 +9,89 @@ import { enviarCarrito, getPreference } from '../Servicios/carrito'
 import './pago.js'
 import { Wallet } from '@mercadopago/sdk-react'
 import { useNavigate } from 'react-router'
+import { useDispatch } from 'react-redux'
+import { clearToken, getToken } from '../Servicios/token.js'
+import { validarTokenUsuario } from '../Servicios/usuarios.js'
+import { accionLogin, accionUsuarioLogueado } from '../../state/actions.js'
 
 
 export function Index(props) {
-    //const { titulo: enunciado } = props             // destructuring Object con alias
 
+    const [comprar, setComprar] = useState(false)
     const [carrito, setCarrito] = useLocalStorage('carrito', [])
     const [ compraStatus, setCompraStatus ] = useState({payment_id: 'null', status: 'null', merchant_order_id: 'null'})
 
     const navigate = useNavigate()
+    const irAInicio = () => {
+        navigate('/inicio')
+      }
+    const dispatch = useDispatch()
+    const[ ,SetNav] = useLocalStorage('navigator', '/')
+ 
+
 
     useEffect(() => {
-        console.log('Componente Index Carrito (montado)')
 
+        async function validar() {
+            const token = getToken()
+            const rta = await validarTokenUsuario(token)
+
+            if (rta.error) {
+                dispatch(accionLogin(false))
+                dispatch(accionUsuarioLogueado('', false))
+                clearToken()
+                navigate('/')
+            }
+            else {
+                SetNav('/carrito')                
+            }
+        }
+        validar()
+    }, [dispatch, navigate, SetNav])
+
+
+    useEffect(() => {
         return () => {
-            console.log('Componente Index Carrito (desmontado)')
+            window.walletBrickController?.unmount()
         }
     }, [])
+
+    useEffect(() => {
+        if(!comprar) {
+            window.walletBrickController?.unmount()
+        }
+    }, [comprar])
+
+    useEffect(() => {
+        async function pedir(compra) {
+            const carritoEnviado = await enviarCarrito({compra: compra, pedido: carrito})
+            console.log(carritoEnviado)
+            setCarrito([])
+        }
+    
+        const miOnReady = async () => {
+            const queryParameters = new URLSearchParams(window.location.search)
+            const compraParam = {}
+            compraParam.payment_id = queryParameters.get('payment_id') || 'null'
+            compraParam.status = queryParameters.get('status') || 'null'
+            compraParam.merchant_order_id = queryParameters.get('merchant_order_id') || 'null'
+    
+            if(compraParam.payment_id !== 'null' && compraParam.status !== 'null' && compraParam.merchant_order_id !== 'null') {
+                if(compraParam.status !== compraStatus.status) {
+                    setCompraStatus(compraParam)
+    
+                    if(compraParam.status === 'approved') {
+                        await pedir(compraParam)
+                        setTimeout(() => {
+                            navigate('/inicio')
+                        },10000)
+                    }
+                }
+            }
+        }
+    
+        miOnReady()
+    }, [compraStatus, navigate, carrito, setCarrito])
 
     
     function borrarAll() {
@@ -57,13 +123,6 @@ export function Index(props) {
         }
     }
 
-    async function pedir(compra) {
-        console.log('pedir')
-
-        const carritoEnviado = await enviarCarrito({compra: compra, pedido: carrito})
-        console.log(carritoEnviado)
-        setCarrito([])
-    }
 
     const customization = {
         //https://www.mercadopago.com.ar/developers/es/docs/checkout-pro/checkout-customization/user-interface/change-button-texts
@@ -74,48 +133,22 @@ export function Index(props) {
         //https://www.mercadopago.com.ar/developers/es/docs/checkout-pro/checkout-customization/user-interface/change-button-appearance
         visual: {
             buttonBackground: 'default',
-            borderRadius: '8px',
+            borderRadius: '6px',
         }        
     }
 
     //https://www.mercadopago.com.ar/developers/es/docs/checkout-pro/checkout-customization/user-interface/auxiliary-callbacks#editor_2
     const onReady = async () => {
-        console.log('onReady')
-
-        const queryParameters = new URLSearchParams(window.location.search)
-        //console.log(queryParameters)
-        const compraParam = {}
-        compraParam.payment_id = queryParameters.get('payment_id') || 'null'
-        compraParam.status = queryParameters.get('status') || 'null'
-        compraParam.merchant_order_id = queryParameters.get('merchant_order_id') || 'null'
-        console.log(compraParam)
-
-        if(compraParam.payment_id !== 'null' && compraParam.status !== 'null' && compraParam.merchant_order_id !== 'null') {
-            if(compraParam.status !== compraStatus.status) {
-                setCompraStatus(compraParam)
-
-                if(compraParam.status === 'approved') {
-                    await pedir(compraParam)
-                    setTimeout(() => {
-                        //window.location.href = '/'
-                        navigate('/inicio')
-                    },10000)
-                }
-            }
-        }
     }
 
     const onError = () => {
-        console.log('onError')
     }
 
     const onSubmit = () => {
-        console.log('onSubmit')
 
         return new Promise((resolve, reject) => {
             getPreference(carrito)
                 .then(({data:response}) => {
-                    console.log(response)
                     resolve(response.preferenceId)
                 })                
                 .catch(error => {
@@ -123,8 +156,6 @@ export function Index(props) {
                 })
         })
     }
-
-
     return (
         <div className="Carrito">
             <div className="jumbotron">
@@ -138,9 +169,9 @@ export function Index(props) {
                                 <h2>Estado de compra</h2>
                                 <hr />
                                 <ul>
-                                    <li><h4>payment_id: {compraStatus.payment_id}</h4></li>
-                                    <li><h4>status: {compraStatus.status}</h4></li>
-                                    <li><h4>merchant_order_id: {compraStatus.merchant_order_id}</h4></li>
+                                    <li><h4>Número pago: {compraStatus.payment_id}</h4></li>
+                                    <li><h4>Estado: {compraStatus.status}</h4></li>
+                                    <li><h4>Número de orden: {compraStatus.merchant_order_id}</h4></li>
                                 </ul>
                             </div>
                     }
@@ -149,18 +180,18 @@ export function Index(props) {
                         <div className="jumbotron">
                             <div className="row">
                                
-                                <div className="col-8">
-                                    <h1 className="display-4">¡El carrito está vacio!</h1>
+                                <div className="col-6">
+                                    <h2 className="display-4">¡El carrito está vacio!</h2>
                                     <p className="lead">No hay problema. Estas a tiempo para seguir comprando.</p>
                                     <p className="lead">No te pierdas las ofertas más extremas del día!!!</p>
                                     <hr className="my-4"></hr>
                                     <p>Es simple, presioná el botón de abajo y podrás elegir lo que vos quieras.</p>
-                                    <a className="btn btn-primary btn-lg" href="./inicio" role="button">Volver a los productos</a>
+                                    <button className="btn btn-primary btn-lg" onClick={irAInicio}>Volver a los productos</button>
                                 </div>
-                                <div className="col-4">
+                               <div className="col-6">
                                     <img className="img-fluid" id='cartvacio' src="https://pachuko.000webhostapp.com/img/carritoVacio.png" alt="carrito"/>
                                 </div>
-    
+                                
                         </div>
                       </div>
                     }    
@@ -172,15 +203,24 @@ export function Index(props) {
                                 incrementarCantID={incrementarCantID}
                                 decrementarCantID={decrementarCantID}
                             />
+                            <div className="text-center my-3">
+                                <button className={`btn btn-${comprar?'warning':'success'}`} onClick={()=> setComprar(!comprar)}>
+                                    { comprar? 'Cancelar pago':<b>Pagar</b> }
+                                </button>
+                            </div>
 
-                            <div id="wallet_container">
-                                <Wallet 
+                            {comprar &&
+
+                                    <div id="wallet_container">
+                                    <Wallet 
                                     customization={customization}
                                     onReady={onReady}
                                     onError={onError}
                                     onSubmit={onSubmit}
-                                />
-                            </div>
+                                    />
+                                    </div>
+                               
+                            }
                         </>
                     }
                 </div>

@@ -1,8 +1,5 @@
 import axios from "axios"
 
-//console.log('process.env.NODE_ENV:', process.env.NODE_ENV)
-//console.log('process.env.REACT_APP_PORT_SRV_DEV:', process.env.REACT_APP_PORT_SRV_DEV)
-
 const URL_API_PRODUCTOS = process.env.NODE_ENV === 'production'
                                     ? '/api/productos/'
                                     : `http://localhost:${process.env.REACT_APP_PORT_SRV_DEV}/api/productos/`
@@ -11,7 +8,6 @@ const URL_API_PRODUCTOS = process.env.NODE_ENV === 'production'
 const proxyProducto = producto => {
     const handler = {
         get: function(target, prop, receiver) {
-            //console.log(target, prop, receiver)
 
             if(prop === 'id') {
                 const id = target._id
@@ -59,8 +55,6 @@ export async function guardarProducto(producto) {
 
 export async function actualizarProducto(id,producto) {
     try {
-        //console.log(producto)
-        //const productoSin_ID = eliminarPropiedad(producto,'_id')
         const productoSin_ID = eliminarPropiedad(eliminarPropiedad(producto,'_id'),'id')
         console.log(productoSin_ID)
 
